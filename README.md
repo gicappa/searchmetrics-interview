@@ -9,12 +9,12 @@ If you are not able to fully implement the task - this is fine, but please expla
 Please develop a service, that constantly checks the currency exchange rate from Bitcoin to US-Dollar (1 Bitcoin = x USD).
 
 ## Requirements
-The check period has to be configurable
-The service must have a REST API with the following endpoints:
-Get latest rate
-Get historical rates from startDate to endDate
-Please describe in a few sentences and/or with a diagram how you planned the project and architecture.
-It should be coded in Java
+- The check period has to be configurable
+- The service must have a REST API with the following endpoints:
+- Get latest rate
+- Get historical rates from startDate to endDate
+- Please describe in a few sentences and/or with a diagram how you planned the project and architecture.
+- It should be coded in Java
 
 ## Principles
 * KISS - keep it simple, stupid
