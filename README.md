@@ -1,5 +1,6 @@
 # Searchmetrics interview
 
+![Searchmetrics](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/sm-logo.png?raw=true)
 ## Coding task
 
 ### Context
@@ -46,17 +47,17 @@ A technique I use to start the modeling of a system is the Event Storming. The i
 The modeling is done using a long enough paper roll hanged on a wall and using post-it with different color codes to represent events, commands aggregates and so on. 
 
 #### Event Storming Session for XChange Rate 
-![Event Storming](https://github.com/gicappa/searchmetrics-interview/blob/master/docs/images/event-storming.png?raw=true)
+![Event Storming](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/event-storming.png?raw=true)
 
 ### C4 Model
 This model is lightweight way to represent different levels of an architecture (systems, containers, components, classes) introducing all the needed details and initial technical choices so to disseminate and discuss the solution with the project stakeholders.
 
 #### System Context
-![C4 System Context](https://github.com/gicappa/searchmetrics-interview/blob/master/docs/images/c4-system-context.png?raw=true)
+![C4 System Context](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-system-context.png?raw=true)
 #### Containers
-![C4 Containers](https://github.com/gicappa/searchmetrics-interview/blob/master/docs/images/c4-containers.png?raw=true)
+![C4 Containers](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-containers.png?raw=true)
 #### Components 
-![C4 Components](https://github.com/gicappa/searchmetrics-interview/blob/master/docs/images/c4-components.png?raw=true)
+![C4 Components](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-components.png?raw=true)
 ### Classes
 In the C4 models I usually avoid the class level of the diagram that is to volatile and doesn't give me aluable information to share with the stakeholders.
 
