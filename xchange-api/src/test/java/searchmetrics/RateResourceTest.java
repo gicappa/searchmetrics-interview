@@ -31,7 +31,7 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @Disabled
+    @Disabled("To be implemented")
     @DisplayName("It returns a JSON with a single rate")
     void it_returns_a_200_response_JSON_with_the_latest_rate() {
         given()
@@ -64,9 +64,12 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @Disabled
+    @Disabled("To be implemented")
     @DisplayName("It returns a JSON with an array of rates")
     void it_returns_a_200_response_JSON_with_the_list_of_rates() {
+        var ts14032021_210700 = LocalDateTime.of(2021, 3, 14, 21, 7, 0);
+        var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
+
         BtcUsdRate[] rates = given()
             .when()
             .get("/rates/btc-usd")
@@ -77,8 +80,8 @@ class RateResourceTest {
             .as(BtcUsdRate[].class);
 
         assertThat(rates).hasSize(2)
-            .contains(new BtcUsdRate(1, 60000.15, LocalDateTime.of(2021, 3, 14, 21, 9, 0)))
-            .contains(new BtcUsdRate(1, 60000.15, LocalDateTime.of(2021, 3, 14, 21, 9, 0)));
+            .contains(new BtcUsdRate(1, 60000.15, ts14032021_210900))
+            .contains(new BtcUsdRate(1, 60001.23, ts14032021_210700));
     }
 
     /**
@@ -96,7 +99,7 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @Disabled
+    @Disabled("To be implemented")
     @DisplayName("It returns a JSON reporting an error for wrong parameters")
     void it_returns_an_error_resource_with_a_wrong_parameter() {
         System.out.println(
