@@ -67,8 +67,8 @@ class RateResourceTest {
     @Disabled("To be implemented")
     @DisplayName("It returns a JSON with an array of rates")
     void it_returns_a_200_response_JSON_with_the_list_of_rates() {
-        var ts14032021_210700 = LocalDateTime.of(2021, 3, 14, 21, 7, 0);
         var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
+        var ts14032021_210700 = LocalDateTime.of(2021, 3, 14, 21, 7, 0);
 
         BtcUsdRate[] rates = given()
             .when()
