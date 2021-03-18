@@ -25,8 +25,7 @@ public class RateResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLatest() {
         try {
-            rateService.getLatestRate();
-            return Response.status(Response.Status.OK).build();
+            return Response.ok(rateService.getLatestRate()).build();
         } catch (RuntimeException re) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }

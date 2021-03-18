@@ -33,6 +33,15 @@ class RESTGetBtcUsdLatestTest {
     }
 
     @Test
+    @DisplayName("It responds with a payload containing the BtcUsdRate entity")
+    void it_returns_a_valid_payload() {
+        var actual = rateResource.getLatest();
+
+        assertThat(actual.getEntity()).isEqualTo(btcUsdRate14032021_210900());
+    }
+
+
+    @Test
     @DisplayName("It responds with a status code 500 when an internal exception is thrown")
     void it_returns_500() {
         when(mockService.getLatestRate()).thenThrow(new XChangeRateEx("Internal Server Error"));
