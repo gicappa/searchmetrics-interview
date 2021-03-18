@@ -36,8 +36,21 @@ public class RateResource {
                 .entity(new RateError(
                 "XC001",
                 "500",
-                "A unexpected exception occurred. Please contact the administrator")
-            ).build();
+                "A unexpected exception occurred. Please contact the administrator"))
+                .type(APPLICATION_JSON_TYPE)
+                .build();
+        }
+    }
+
+    public Response index() {
+        try {
+            return Response.ok(rateService.getRatesBetween()).type(APPLICATION_JSON_TYPE).build();
+        } catch (RuntimeException re) {
+            return Response.serverError().entity(new RateError(
+                "XC002",
+                "500",
+                "A unexpected exception occurred. Please contact the administrator"))
+                .build();
         }
     }
 }

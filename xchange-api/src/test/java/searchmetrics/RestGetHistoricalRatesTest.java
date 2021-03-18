@@ -1,6 +1,7 @@
 package searchmetrics;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -13,8 +14,8 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-@DisplayName("The latest exchange rate BTC-USD")
-class RestGetLatestRateTest {
+@DisplayName("The historical exchange rate BTC-USD")
+class RestGetHistoricalRatesTest {
 
     private RateService mockService;
     private RateResource rateResource;
@@ -31,41 +32,41 @@ class RestGetLatestRateTest {
 
         @BeforeEach
         void beforeEach() {
-            when(mockService.getLatestRate()).thenReturn(btcUsdRate14032021_210900());
-        }
-
-        @Test
-        @DisplayName("It responds using a Content-Type: application/json")
-        void it_returns_content_type_application_json() {
-            var actual = rateResource.getLatest();
-
-            assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
-        }
-
-        @Test
-        @DisplayName("It invokes the rate service")
-        void it_calls_the_rate_service() {
-            rateResource.getLatest();
-
-            verify(mockService).getLatestRate();
+            when(mockService.getRatesBetween()).thenReturn(List.of(btcUsdRate14032021_210900()));
         }
 
         @Test
         @DisplayName("it responds with a status code 200")
         void it_returns_200() {
-            var actual = rateResource.getLatest();
+            var actual = rateResource.index();
 
             assertThat(actual.getStatus()).isEqualTo(200);
         }
 
         @Test
-        @DisplayName("It responds with a payload containing the BtcUsdRate entity")
-        void it_returns_a_valid_payload() {
-            var actual = rateResource.getLatest();
+        @DisplayName("it responds using a Content-Type: application/json")
+        void it_returns_content_type_application_json() {
+            var actual = rateResource.index();
 
-            assertThat(actual.getEntity()).isEqualTo(btcUsdRate14032021_210900());
+            assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
         }
 
+        @Test
+        @DisplayName("it invokes the historical rate service")
+        void it_calls_the_rate_service() {
+            rateResource.index();
+
+            verify(mockService).getRatesBetween();
+        }
+
+        @Test
+        @DisplayName("It responds with a list of BtcUsdRate entity")
+        void it_returns_a_valid_payload() {
+            var actual = rateResource.index();
+
+            assertThat(actual.getEntity())
+                .isEqualTo(List.of(btcUsdRate14032021_210900()));
+        }
     }
 
     @Nested
@@ -73,21 +74,14 @@ class RestGetLatestRateTest {
     class WhenUnsuccessful {
         @BeforeEach
         void beforeEach() {
-            when(mockService.getLatestRate()).thenThrow(new XChangeRateEx("Internal Server Error"));
+            when(mockService.getRatesBetween())
+                .thenThrow(new XChangeRateEx("Internal Server Error"));
         }
 
         @Test
-        @DisplayName("It responds using a Content-Type: application/json")
-        void it_returns_content_type_application_json() {
-            var actual = rateResource.getLatest();
-
-            assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
-        }
-
-        @Test
-        @DisplayName("It responds with a status code 500 when an internal exception is thrown")
+        @DisplayName("it responds with a status code 500 when an internal exception is thrown")
         void it_returns_500() {
-            var actual = rateResource.getLatest();
+            var actual = rateResource.index();
 
             assertThat(actual.getStatus()).isEqualTo(500);
         }
@@ -95,11 +89,11 @@ class RestGetLatestRateTest {
         @Test
         @DisplayName("It responds with a payload containing the error")
         void it_returns_a_valid_payload() {
-            var actual = rateResource.getLatest();
+            var actual = rateResource.index();
 
             final var expectedError =
                 new RateError(
-                    "XC001",
+                    "XC002",
                     "500",
                     "A unexpected exception occurred. Please contact the administrator");
 

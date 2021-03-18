@@ -1,6 +1,7 @@
 package searchmetrics;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.util.List;
 
 /**
  * RateService has the responsibility of decoupling the APIs
@@ -22,5 +23,9 @@ public class RateService {
      */
     public BtcUsdRate getLatestRate() {
         return rateRepository.getLatest();
+    }
+
+    public List<BtcUsdRate> getRatesBetween() {
+        return null;
     }
 }
