@@ -31,7 +31,12 @@ public class RateResource {
                 .type(APPLICATION_JSON_TYPE)
                 .build();
         } catch (RuntimeException re) {
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
+            return Response.serverError()
+                .entity(new RateError(
+                "XC001",
+                "500",
+                "A unexpected exception occurred. Please contact the administrator")
+            ).build();
         }
     }
 }

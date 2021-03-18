@@ -68,15 +68,31 @@ class GetLatestRateTest {
     @Nested
     @DisplayName("when a unsuccessful GET request is performed")
     class WhenUnsuccessful {
+        @BeforeEach
+        void beforeEach() {
+            when(mockService.getLatestRate()).thenThrow(new XChangeRateEx("Internal Server Error"));
+        }
 
         @Test
         @DisplayName("It responds with a status code 500 when an internal exception is thrown")
         void it_returns_500() {
-            when(mockService.getLatestRate()).thenThrow(new XChangeRateEx("Internal Server Error"));
-
             var actual = rateResource.getLatest();
 
             assertThat(actual.getStatus()).isEqualTo(500);
+        }
+
+        @Test
+        @DisplayName("It responds with a payload containing the error")
+        void it_returns_a_valid_payload() {
+            var actual = rateResource.getLatest();
+
+            final var expectedError =
+                new RateError(
+                    "XC001",
+                    "500",
+                    "A unexpected exception occurred. Please contact the administrator");
+
+            assertThat(actual.getEntity()).isEqualTo(expectedError);
         }
     }
 
