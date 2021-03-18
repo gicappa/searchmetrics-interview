@@ -12,7 +12,6 @@ import org.junit.jupiter.api.Test;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
@@ -80,8 +79,17 @@ class RestGetHistoricalRatesTest {
 
         @Test
         @DisplayName("it responds with a default range list of BtcUsdRate entity")
-        void it_returns_a_list_of_rate_entity_even() {
+        void it_returns_a_list_of_rates_for_a_call_with_null_params() {
             var actual = rateResource.index(null, null);
+
+            assertThat(actual.readEntity(listRateClass()))
+                .containsExactly(rate20210301(), rate20210314());
+        }
+
+        @Test
+        @DisplayName("it responds with a default range list of BtcUsdRate entity")
+        void it_returns_a_list_of_rates_for_a_call_with_empty_params() {
+            var actual = rateResource.index("", "");
 
             assertThat(actual.readEntity(listRateClass()))
                 .containsExactly(rate20210301(), rate20210314());

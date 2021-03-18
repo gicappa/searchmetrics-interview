@@ -13,6 +13,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
+import static searchmetrics.FakeRateRepository.rate1;
+import static searchmetrics.FakeRateRepository.rate2;
+import static searchmetrics.FakeRateRepository.rate3;
 
 @QuarkusTest
 @DisplayName("The rate resource")
@@ -27,7 +30,7 @@ class RateResourceTest {
      * {
      *   "BTC": 1
      *   "USD": 60000.15,
-     *   "timestamp": "2021-03-14T21:09:00Z"
+     *   "timestamp": "2021-03-14T13:01:59Z"
      * }
      * </pre>
      */
@@ -42,7 +45,7 @@ class RateResourceTest {
             .contentType(JSON)
             .body("btc", equalTo(1F))
             .body("usd", equalTo(60000.15F))
-            .body("timestamp", equalTo("2021-03-14T21:09:00Z"));
+            .body("timestamp", equalTo("2021-03-14T13:01:59Z"));
     }
 
     /**
@@ -54,21 +57,23 @@ class RateResourceTest {
      * [{
      *   "BTC": 1
      *   "USD": 60000.15,
-     *   "timestamp": "2021-03-14T21:09:00Z"
+     *   "timestamp": "2021-03-14T13:01:59Z"
      * },
      * {
      *   "BTC": 1
      *   "USD": 60001.23,
-     *   "timestamp": "2021-03-14T21:07:00Z"
+     *   "timestamp": "2021-03-10T23:44:05Z"
+     * },
+     * {
+     *   "BTC": 1
+     *   "USD": 60001.23,
+     *   "timestamp": "2021-03-07T10:27:00Z"
      * }]
      * </pre>
      */
     @Test
-    @Disabled("To be implemented")
     @DisplayName("returns a JSON with an array of rates")
     void it_returns_a_200_response_JSON_with_the_list_of_rates() {
-        var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
-        var ts14032021_210700 = LocalDateTime.of(2021, 3, 14, 21, 7, 0);
 
         BtcUsdRate[] rates = given()
             .when()
@@ -79,9 +84,8 @@ class RateResourceTest {
             .extract()
             .as(BtcUsdRate[].class);
 
-        assertThat(rates).hasSize(2)
-            .contains(new BtcUsdRate(1, 60000.15, ts14032021_210900))
-            .contains(new BtcUsdRate(1, 60001.23, ts14032021_210700));
+        assertThat(rates).hasSize(3)
+            .containsExactly(rate1(), rate2(), rate3());
     }
 
     /**
@@ -91,8 +95,8 @@ class RateResourceTest {
      * <pre>
      * {
      *   "error": {
-     *     "type": "ValidationError",
-     *     "code": "FB001",
+     *     "type": "XC003",
+     *     "code": "400",
      *     "message": "The query parameter limit must be a number.",
      *   }
      * }
@@ -111,8 +115,8 @@ class RateResourceTest {
                 .statusCode(400)
                 .contentType(JSON)
                 .body("any { it.key == 'error' }", is(true))
-                .body("error.type", is("ValidationError"))
-                .body("error.code", is("FB001"))
+                .body("error.type", is("XC003"))
+                .body("error.code", is("400"))
                 .body("error.message", containsString("must be a number")));
     }
 }

@@ -53,11 +53,10 @@ public class RateResource {
      * and returns the time series of the exchange rates BTC-USD for that period
      *
      * @param startDate the start date of period of time in the format yyy-MM-dd
-     * @param endDate the end date of period of time in the format yyy-MM-dd
+     * @param endDate   the end date of period of time in the format yyy-MM-dd
      * @return the json array with the rates information for the specified period
      */
     @GET
-    @Path("/")
     @Produces(APPLICATION_JSON)
     public Response index(String startDate, String endDate) {
         try {
@@ -83,11 +82,11 @@ public class RateResource {
 
     /**
      * @param startDate the start date of period of time in the format yyy-MM-dd
-     * @param endDate the end date of period of time in the format yyy-MM-dd
+     * @param endDate   the end date of period of time in the format yyy-MM-dd
      * @return a List with the BtcUsdRate information for the specified period
      */
     private List<BtcUsdRate> getRates(String startDate, String endDate) {
-        if (startDate == null && endDate == null) {
+        if (startDate == null || endDate == null || startDate.isBlank() || endDate.isBlank()) {
             return rateService.getRatesByDefaultPeriod();
         }
 
