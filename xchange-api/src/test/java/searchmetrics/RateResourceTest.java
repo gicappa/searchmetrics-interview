@@ -15,6 +15,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
 
 @QuarkusTest
+@DisplayName("The rate resource")
 class RateResourceTest {
 
     /**
@@ -32,7 +33,7 @@ class RateResourceTest {
      */
     @Test
     @Disabled("To be implemented")
-    @DisplayName("It returns a JSON with a single rate")
+    @DisplayName("returns a JSON with a single rate")
     void it_returns_a_200_response_JSON_with_the_latest_rate() {
         given()
             .when()
@@ -65,7 +66,7 @@ class RateResourceTest {
      */
     @Test
     @Disabled("To be implemented")
-    @DisplayName("It returns a JSON with an array of rates")
+    @DisplayName("returns a JSON with an array of rates")
     void it_returns_a_200_response_JSON_with_the_list_of_rates() {
         var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
         var ts14032021_210700 = LocalDateTime.of(2021, 3, 14, 21, 7, 0);
@@ -100,7 +101,7 @@ class RateResourceTest {
      */
     @Test
     @Disabled("To be implemented")
-    @DisplayName("It returns a JSON reporting an error for wrong parameters")
+    @DisplayName("returns a JSON reporting an error for wrong parameters")
     void it_returns_an_error_resource_with_a_wrong_parameter() {
         System.out.println(
             given()
