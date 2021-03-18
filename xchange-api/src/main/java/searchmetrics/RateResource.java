@@ -5,6 +5,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.List;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
@@ -60,6 +61,13 @@ public class RateResource {
 
             return Response.ok(rates).type(APPLICATION_JSON_TYPE).build();
 
+        } catch (DateTimeParseException re) {
+            return Response.status(Response.Status.BAD_REQUEST)
+                .entity(new RateError(
+                    "XC003",
+                    "400",
+                    "startDate or endDate parameters must be expressed in the format yyyy-MM-dd"))
+                .build();
         } catch (RuntimeException re) {
 
             return Response.serverError().entity(new RateError(

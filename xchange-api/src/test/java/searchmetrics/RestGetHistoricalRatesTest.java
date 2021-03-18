@@ -124,6 +124,28 @@ class RestGetHistoricalRatesTest {
         }
 
         @Test
+        @DisplayName("it responds with a status code 400 when a parameter different from a date is passed")
+        void it_returns_400() {
+            var actual = rateResource.index("foo", "bar");
+
+            assertThat(actual.getStatus()).isEqualTo(400);
+        }
+
+        @Test
+        @DisplayName("it responds with a payload containing the error")
+        void it_returns_en_error_payload() {
+            var actual = rateResource.index("foo", "bar");
+
+            final var expectedError =
+                new RateError(
+                    "XC003",
+                    "400",
+                    "startDate or endDate parameters must be expressed in the format yyyy-MM-dd");
+
+            assertThat(actual.getEntity()).isEqualTo(expectedError);
+        }
+
+        @Test
         @DisplayName("it responds with a status code 500 when an internal exception is thrown")
         void it_returns_500() {
             var actual = rateResource.index("2021-03-04", "2021-03-18");
@@ -141,7 +163,7 @@ class RestGetHistoricalRatesTest {
 
         @Test
         @DisplayName("it responds with a payload containing the error")
-        void it_returns_a_valid_payload() {
+        void it_returns_an_error_payload() {
             var actual = rateResource.index("2021-03-04", "2021-03-18");
 
             final var expectedError =
