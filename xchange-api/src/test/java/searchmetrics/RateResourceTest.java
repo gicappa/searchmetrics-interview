@@ -103,20 +103,19 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @Disabled("To be implemented")
     @DisplayName("returns a JSON reporting an error for wrong parameters")
     void it_returns_an_error_resource_with_a_wrong_parameter() {
         System.out.println(
             given()
-                .queryParam("limit", "foobar")
+                .queryParam("startDate", "foo")
+                .queryParam("endDate", "bar")
                 .when()
                 .get("/rates/btc-usd")
                 .then()
                 .statusCode(400)
                 .contentType(JSON)
-                .body("any { it.key == 'error' }", is(true))
-                .body("error.type", is("XC003"))
-                .body("error.code", is("400"))
-                .body("error.message", containsString("must be a number")));
+                .body("type", is("XC003"))
+                .body("code", is("400"))
+                .body("message", containsString("startDate and endDate")));
     }
 }

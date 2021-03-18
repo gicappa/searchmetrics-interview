@@ -148,7 +148,7 @@ class RestGetHistoricalRatesTest {
                 new RateError(
                     "XC003",
                     "400",
-                    "startDate or endDate parameters must be expressed in the format yyyy-MM-dd");
+                    "parameters startDate and endDate must be expressed in the format yyyy-MM-dd");
 
             assertThat(actual.getEntity()).isEqualTo(expectedError);
         }

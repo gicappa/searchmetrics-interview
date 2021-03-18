@@ -3,6 +3,7 @@ package searchmetrics;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -58,7 +59,10 @@ public class RateResource {
      */
     @GET
     @Produces(APPLICATION_JSON)
-    public Response index(String startDate, String endDate) {
+    public Response index(
+        @QueryParam("startDate") String startDate,
+        @QueryParam("endDate") String endDate) {
+
         try {
 
             return Response.ok(getRates(startDate, endDate))
@@ -132,6 +136,6 @@ public class RateResource {
         return new RateError(
             code,
             "400",
-            "startDate or endDate parameters must be expressed in the format yyyy-MM-dd");
+            "parameters startDate and endDate must be expressed in the format yyyy-MM-dd");
     }
 }
