@@ -10,6 +10,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static searchmetrics.Scenario.rate20210314;
 
 @DisplayName("The service XChange rate")
 class ServiceRateTest {
@@ -20,7 +21,7 @@ class ServiceRateTest {
     @BeforeEach
     void beforeEach() {
         rateRepository = mock(RateRepository.class);
-        when(rateRepository.getLatest()).thenReturn(btcUsdRate14032021_210900());
+        when(rateRepository.getLatest()).thenReturn(rate20210314());
         rateService = new RateService(rateRepository);
     }
 
@@ -37,11 +38,7 @@ class ServiceRateTest {
     void it_returns_the_latest_rate() {
         var actual = rateService.getLatestRate();
 
-        assertThat(actual).isEqualTo(btcUsdRate14032021_210900());
+        assertThat(actual).isEqualTo(rate20210314());
     }
 
-    private BtcUsdRate btcUsdRate14032021_210900() {
-        var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
-        return new BtcUsdRate(1, 60000.15, ts14032021_210900);
-    }
 }
