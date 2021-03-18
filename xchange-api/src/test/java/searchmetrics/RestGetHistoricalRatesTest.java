@@ -1,8 +1,10 @@
 package searchmetrics;
 
-import java.time.LocalDateTime;
+import javax.ws.rs.core.GenericType;
+import java.time.LocalDate;
 import java.util.List;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
@@ -10,9 +12,13 @@ import org.junit.jupiter.api.Test;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static searchmetrics.Scenario.rate20210301;
+import static searchmetrics.Scenario.rate20210314;
 
 @DisplayName("The historical exchange rate BTC-USD")
 class RestGetHistoricalRatesTest {
@@ -32,13 +38,24 @@ class RestGetHistoricalRatesTest {
 
         @BeforeEach
         void beforeEach() {
-            when(mockService.getRatesBetween()).thenReturn(List.of(btcUsdRate14032021_210900()));
+            when(mockService.getRatesBetween(
+                LocalDate.parse("2021-03-04"),
+                LocalDate.parse("2021-03-18")))
+                .thenReturn(List.of(rate20210314()));
+
+            when(mockService.getRatesDefault())
+                .thenReturn(List.of(rate20210301(), rate20210314()));
+        }
+
+        @AfterEach
+        void afterEach() {
+            reset(mockService);
         }
 
         @Test
         @DisplayName("it responds with a status code 200")
         void it_returns_200() {
-            var actual = rateResource.index();
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
 
             assertThat(actual.getStatus()).isEqualTo(200);
         }
@@ -46,7 +63,7 @@ class RestGetHistoricalRatesTest {
         @Test
         @DisplayName("it responds using a Content-Type: application/json")
         void it_returns_content_type_application_json() {
-            var actual = rateResource.index();
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
 
             assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
         }
@@ -54,18 +71,46 @@ class RestGetHistoricalRatesTest {
         @Test
         @DisplayName("it invokes the historical rate service")
         void it_calls_the_rate_service() {
-            rateResource.index();
+            rateResource.index("2021-03-04", "2021-03-18");
 
-            verify(mockService).getRatesBetween();
+            verify(mockService).getRatesBetween(
+                LocalDate.parse("2021-03-04"),
+                LocalDate.parse("2021-03-18"));
         }
 
         @Test
-        @DisplayName("It responds with a list of BtcUsdRate entity")
-        void it_returns_a_valid_payload() {
-            var actual = rateResource.index();
+        @DisplayName("it responds with a default range list of BtcUsdRate entity")
+        void it_returns_a_list_of_rate_entity_even() {
+            var actual = rateResource.index(null, null);
 
-            assertThat(actual.getEntity())
-                .isEqualTo(List.of(btcUsdRate14032021_210900()));
+            assertThat(actual.readEntity(listRateClass()))
+                .containsExactly(rate20210301(), rate20210314());
+        }
+
+        @Test
+        @DisplayName("it responds with a default range list of BtcUsdRate entity")
+        void it_returns_a_list_of_rate_entity_even_() {
+            rateResource.index(null, null);
+
+            verify(mockService).getRatesDefault();
+        }
+
+        @Test
+        @DisplayName("it responds with a default range list of BtcUsdRate entity")
+        void it_returns_a_list_of_rate_entity() {
+            var actual = rateResource.index(null, null);
+
+            assertThat(actual.readEntity(listRateClass()))
+                .containsExactly(rate20210301(), rate20210314());
+        }
+
+        @Test
+        @DisplayName("it responds with a list of BtcUsdRate entity in a date range")
+        void it_returns_a_list_of_rate_entity_in_a_time_range() {
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
+
+            assertThat(actual.readEntity(listRateClass()))
+                .containsExactly(rate20210314());
         }
     }
 
@@ -74,22 +119,30 @@ class RestGetHistoricalRatesTest {
     class WhenUnsuccessful {
         @BeforeEach
         void beforeEach() {
-            when(mockService.getRatesBetween())
+            when(mockService.getRatesBetween(LocalDate.parse("2021-03-04"), LocalDate.parse("2021-03-18")))
                 .thenThrow(new XChangeRateEx("Internal Server Error"));
         }
 
         @Test
         @DisplayName("it responds with a status code 500 when an internal exception is thrown")
         void it_returns_500() {
-            var actual = rateResource.index();
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
 
             assertThat(actual.getStatus()).isEqualTo(500);
         }
 
         @Test
-        @DisplayName("It responds with a payload containing the error")
+        @DisplayName("it responds using a Content-Type: application/json")
+        void it_returns_content_type_application_json() {
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
+
+            assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
+        }
+
+        @Test
+        @DisplayName("it responds with a payload containing the error")
         void it_returns_a_valid_payload() {
-            var actual = rateResource.index();
+            var actual = rateResource.index("2021-03-04", "2021-03-18");
 
             final var expectedError =
                 new RateError(
@@ -101,9 +154,8 @@ class RestGetHistoricalRatesTest {
         }
     }
 
-    private BtcUsdRate btcUsdRate14032021_210900() {
-        var ts14032021_210900 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
-        return new BtcUsdRate(1, 60000.15, ts14032021_210900);
+    public GenericType<List<BtcUsdRate>> listRateClass() {
+        return new GenericType<>() {
+        };
     }
-
 }

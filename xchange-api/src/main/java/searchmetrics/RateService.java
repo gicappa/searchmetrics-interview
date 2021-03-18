@@ -1,6 +1,7 @@
 package searchmetrics;
 
 import javax.enterprise.context.ApplicationScoped;
+import java.time.LocalDate;
 import java.util.List;
 
 /**
@@ -25,7 +26,11 @@ public class RateService {
         return rateRepository.getLatest();
     }
 
-    public List<BtcUsdRate> getRatesBetween() {
+    public List<BtcUsdRate> getRatesBetween(LocalDate startDate, LocalDate endDate) {
+        return null;
+    }
+
+    public List<BtcUsdRate> getRatesDefault() {
         return null;
     }
 }

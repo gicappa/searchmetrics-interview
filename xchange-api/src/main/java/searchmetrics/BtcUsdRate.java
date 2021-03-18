@@ -41,4 +41,13 @@ public class BtcUsdRate {
     public int hashCode() {
         return Objects.hash(btc, usd, timestamp);
     }
+
+    @Override
+    public String toString() {
+        return "BtcUsdRate{" +
+            "btc=" + btc +
+            ", usd=" + usd +
+            ", timestamp=" + timestamp +
+            '}';
+    }
 }
