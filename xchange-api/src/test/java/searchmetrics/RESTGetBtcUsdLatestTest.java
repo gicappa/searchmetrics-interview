@@ -11,7 +11,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
-class RateRestTest {
+class RESTGetBtcUsdLatestTest {
 
     private RateService mockService;
     private RateResource rateResource;
