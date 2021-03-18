@@ -26,11 +26,11 @@ public class RateService {
         return rateRepository.getLatest();
     }
 
-    public List<BtcUsdRate> getRatesBetween(LocalDate startDate, LocalDate endDate) {
-        return null;
+    public List<BtcUsdRate> getRatesByPeriod(LocalDate startDate, LocalDate endDate) {
+        return rateRepository.getRateByPeriod(startDate, endDate);
     }
 
-    public List<BtcUsdRate> getRatesDefault() {
+    public List<BtcUsdRate> getRatesByDefaultPeriod() {
         return null;
     }
 }

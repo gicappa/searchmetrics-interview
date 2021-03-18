@@ -67,10 +67,10 @@ public class RateResource {
 
     private List<BtcUsdRate> getRates(String startDate, String endDate) {
         if (startDate == null && endDate == null) {
-            return rateService.getRatesDefault();
+            return rateService.getRatesByDefaultPeriod();
         }
 
-        return rateService.getRatesBetween(
+        return rateService.getRatesByPeriod(
             parse(startDate), parse(endDate));
     }
 

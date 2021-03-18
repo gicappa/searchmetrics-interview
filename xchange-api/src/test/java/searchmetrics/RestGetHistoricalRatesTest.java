@@ -38,12 +38,12 @@ class RestGetHistoricalRatesTest {
 
         @BeforeEach
         void beforeEach() {
-            when(mockService.getRatesBetween(
+            when(mockService.getRatesByPeriod(
                 LocalDate.parse("2021-03-04"),
                 LocalDate.parse("2021-03-18")))
                 .thenReturn(List.of(rate20210314()));
 
-            when(mockService.getRatesDefault())
+            when(mockService.getRatesByDefaultPeriod())
                 .thenReturn(List.of(rate20210301(), rate20210314()));
         }
 
@@ -73,7 +73,7 @@ class RestGetHistoricalRatesTest {
         void it_calls_the_rate_service() {
             rateResource.index("2021-03-04", "2021-03-18");
 
-            verify(mockService).getRatesBetween(
+            verify(mockService).getRatesByPeriod(
                 LocalDate.parse("2021-03-04"),
                 LocalDate.parse("2021-03-18"));
         }
@@ -92,7 +92,7 @@ class RestGetHistoricalRatesTest {
         void it_returns_a_list_of_rate_entity_even_() {
             rateResource.index(null, null);
 
-            verify(mockService).getRatesDefault();
+            verify(mockService).getRatesByDefaultPeriod();
         }
 
         @Test
@@ -119,7 +119,7 @@ class RestGetHistoricalRatesTest {
     class WhenUnsuccessful {
         @BeforeEach
         void beforeEach() {
-            when(mockService.getRatesBetween(LocalDate.parse("2021-03-04"), LocalDate.parse("2021-03-18")))
+            when(mockService.getRatesByPeriod(LocalDate.parse("2021-03-04"), LocalDate.parse("2021-03-18")))
                 .thenThrow(new XChangeRateEx("Internal Server Error"));
         }
 

@@ -2,7 +2,11 @@ package searchmetrics;
 
 import java.time.LocalDateTime;
 
+/**
+ * TestScenario provides some test data to be used in the tests
+ */
 public class Scenario {
+
     static BtcUsdRate rate20210314() {
         var ts20210314 = LocalDateTime.of(2021, 3, 14, 21, 9, 0);
         return new BtcUsdRate(1, 60000.15, ts20210314);
