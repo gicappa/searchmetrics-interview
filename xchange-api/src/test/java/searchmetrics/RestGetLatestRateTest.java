@@ -14,7 +14,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("The latest exchange rate BTC-USD")
-class GetLatestRateTest {
+class RestGetLatestRateTest {
 
     private RateService mockService;
     private RateResource rateResource;
