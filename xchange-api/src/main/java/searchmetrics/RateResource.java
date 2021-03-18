@@ -8,7 +8,7 @@ import javax.ws.rs.core.Response;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
-@Path("/rates")
+@Path("/rates/btc-usd")
 public class RateResource {
 
     private final RateService rateService;
@@ -24,6 +24,7 @@ public class RateResource {
     }
 
     @GET
+    @Path("/latest")
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLatest() {
         try {

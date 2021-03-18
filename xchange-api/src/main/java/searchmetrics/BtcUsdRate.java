@@ -3,6 +3,9 @@ package searchmetrics;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
+import static java.time.ZoneOffset.UTC;
+import static java.time.format.DateTimeFormatter.ISO_INSTANT;
+
 public class BtcUsdRate {
     private final double btc;
     private final double usd;
@@ -22,8 +25,8 @@ public class BtcUsdRate {
         return usd;
     }
 
-    public LocalDateTime getTimestamp() {
-        return timestamp;
+    public String getTimestamp() {
+        return ISO_INSTANT.format(timestamp.toInstant(UTC));
     }
 
     @Override

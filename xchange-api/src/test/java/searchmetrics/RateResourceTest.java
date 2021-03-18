@@ -32,7 +32,6 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @Disabled("To be implemented")
     @DisplayName("returns a JSON with a single rate")
     void it_returns_a_200_response_JSON_with_the_latest_rate() {
         given()
@@ -41,8 +40,8 @@ class RateResourceTest {
             .then()
             .statusCode(200)
             .contentType(JSON)
-            .body("BTC", equalTo(1))
-            .body("USD", equalTo(60000.15))
+            .body("btc", equalTo(1F))
+            .body("usd", equalTo(60000.15F))
             .body("timestamp", equalTo("2021-03-14T21:09:00Z"));
     }
 
