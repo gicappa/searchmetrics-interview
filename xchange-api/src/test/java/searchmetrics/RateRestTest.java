@@ -33,6 +33,16 @@ class RateRestTest {
     }
 
     @Test
+    @DisplayName("It responds with a status code 500 when an internal exception is thrown")
+    void it_returns_500() {
+        when(mockService.getLatestRate()).thenThrow(new XChangeRateEx("Internal Server Error"));
+
+        var actual = rateResource.getLatest();
+
+        assertThat(actual.getStatus()).isEqualTo(500);
+    }
+
+    @Test
     @DisplayName("It invokes the rate service")
     void it_calls_the_rate_service() {
         rateResource.getLatest();
