@@ -1,7 +1,12 @@
 package searchmetrics;
 
+import java.time.Clock;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
+
+import static java.time.ZoneOffset.UTC;
+import static java.time.temporal.ChronoUnit.WEEKS;
 
 /**
  * RateService has the responsibility of decoupling the APIs
@@ -12,9 +17,15 @@ import java.util.List;
  */
 public class RateService {
     private final RateRepository rateRepository;
+    private final Clock clock;
 
     public RateService(RateRepository rateRepository) {
+        this(rateRepository, Clock.systemUTC());
+    }
+
+    public RateService(RateRepository rateRepository, Clock clock) {
         this.rateRepository = rateRepository;
+        this.clock = clock;
     }
 
     /**
@@ -29,6 +40,9 @@ public class RateService {
     }
 
     public List<BtcUsdRate> getRatesByDefaultPeriod() {
-        return null;
+        var endDate = LocalDate.ofInstant(Instant.now(clock), UTC);
+        var startDate = endDate.minus(1, WEEKS);
+
+        return getRatesByPeriod(startDate, endDate);
     }
 }

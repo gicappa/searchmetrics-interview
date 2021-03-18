@@ -27,11 +27,11 @@ class ServiceRateTest {
     @BeforeEach
     void beforeEach() {
         rateRepository = mock(RateRepository.class);
-        when(rateRepository.getLatest()).thenReturn(rate20210314());
 
+        when(rateRepository.getLatest()).thenReturn(rate20210314());
         when(rateRepository.getRateByPeriod(any(), any())).thenReturn(List.of(rate20210314()));
 
-        rateService = new RateService(rateRepository);
+        rateService = new RateService(rateRepository, clock2021_02_10());
     }
 
     private Clock clock2021_02_10() {
@@ -78,14 +78,13 @@ class ServiceRateTest {
     }
 
     @Test
-    @Disabled("not yet implemented")
-    @DisplayName("returns the data of one week period when no params are passed")
+    @DisplayName("returns the data of one week period (from 2021-02-10) when no params are passed")
     void it_returns_the_data_for_the_default_time_period() {
         rateService.getRatesByDefaultPeriod();
 
         verify(rateRepository).getRateByPeriod(
-            LocalDate.parse("2021-03-04"),
-            LocalDate.parse("2021-03-13"));
+            LocalDate.parse("2021-02-03"),
+            LocalDate.parse("2021-02-10"));
     }
 
 }
