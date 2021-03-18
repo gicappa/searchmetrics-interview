@@ -36,10 +36,7 @@ public class RateResource {
                 .build();
         } catch (RuntimeException re) {
             return Response.serverError()
-                .entity(new RateError(
-                    "XC001",
-                    "500",
-                    "A unexpected exception occurred. Please contact the administrator"))
+                .entity(serverError("XC001"))
                 .type(APPLICATION_JSON_TYPE)
                 .build();
         }
@@ -51,32 +48,30 @@ public class RateResource {
     public Response index(String startDate, String endDate) {
         try {
 
-            List<BtcUsdRate> rates;
-
-            if (startDate == null && endDate == null) {
-                rates = rateService.getRatesDefault();
-            } else {
-                rates = rateService.getRatesBetween(parse(startDate), parse(endDate));
-            }
-
-            return Response.ok(rates).type(APPLICATION_JSON_TYPE).build();
+            return Response.ok(getRates(startDate, endDate))
+                .type(APPLICATION_JSON_TYPE).build();
 
         } catch (DateTimeParseException re) {
+
             return Response.status(Response.Status.BAD_REQUEST)
-                .entity(new RateError(
-                    "XC003",
-                    "400",
-                    "startDate or endDate parameters must be expressed in the format yyyy-MM-dd"))
+                .entity(badRequestError("XC003"))
                 .build();
+
         } catch (RuntimeException re) {
 
-            return Response.serverError().entity(new RateError(
-                "XC002",
-                "500",
-                "A unexpected exception occurred. Please contact the administrator"))
+            return Response.serverError().entity(serverError("XC002"))
                 .type(APPLICATION_JSON_TYPE)
                 .build();
         }
+    }
+
+    private List<BtcUsdRate> getRates(String startDate, String endDate) {
+        if (startDate == null && endDate == null) {
+            return rateService.getRatesDefault();
+        }
+
+        return rateService.getRatesBetween(
+            parse(startDate), parse(endDate));
     }
 
     private LocalDate parse(String startDate) {
@@ -84,5 +79,19 @@ public class RateResource {
             return null;
 
         return LocalDate.parse(startDate);
+    }
+
+    private RateError serverError(String code) {
+        return new RateError(
+            code,
+            "500",
+            "A unexpected exception occurred. Please contact the administrator");
+    }
+
+    private RateError badRequestError(String code) {
+        return new RateError(
+            code,
+            "400",
+            "startDate or endDate parameters must be expressed in the format yyyy-MM-dd");
     }
 }
