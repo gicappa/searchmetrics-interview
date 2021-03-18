@@ -9,5 +9,5 @@ public interface RateRepository {
     /**
      * @return the latest BTC-USD rate exchange collected
      */
-    void getLatest();
+    BtcUsdRate getLatest();
 }

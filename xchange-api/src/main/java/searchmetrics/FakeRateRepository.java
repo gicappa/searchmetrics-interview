@@ -7,7 +7,7 @@ import javax.enterprise.inject.Default;
 @ApplicationScoped
 public class FakeRateRepository implements RateRepository {
     @Override
-    public void getLatest() {
-
+    public BtcUsdRate getLatest() {
+        return null;
     }
 }
