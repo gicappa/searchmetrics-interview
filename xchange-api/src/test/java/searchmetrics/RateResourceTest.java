@@ -72,11 +72,53 @@ class RateResourceTest {
      * </pre>
      */
     @Test
-    @DisplayName("returns a JSON with an array of rates")
+    @DisplayName("returns a JSON with an array of rates (no start end date params)")
     void it_returns_a_200_response_JSON_with_the_list_of_rates() {
 
         BtcUsdRate[] rates = given()
             .when()
+            .get("/rates/btc-usd")
+            .then()
+            .statusCode(200)
+            .contentType(JSON)
+            .extract()
+            .as(BtcUsdRate[].class);
+
+        assertThat(rates).hasSize(3)
+            .containsExactly(rate1(), rate2(), rate3());
+    }
+
+    /**
+     * Checking that the apis are returning a JSON with a list of words. The number
+     * of words is by default 20 and they must comply with the fizzbuzz
+     * specification.
+     *
+     * <pre>
+     * [{
+     *   "BTC": 1
+     *   "USD": 60000.15,
+     *   "timestamp": "2021-03-14T13:01:59Z"
+     * },
+     * {
+     *   "BTC": 1
+     *   "USD": 60001.23,
+     *   "timestamp": "2021-03-10T23:44:05Z"
+     * },
+     * {
+     *   "BTC": 1
+     *   "USD": 60001.23,
+     *   "timestamp": "2021-03-07T10:27:00Z"
+     * }]
+     * </pre>
+     */
+    @Test
+    @DisplayName("returns a JSON with an array of rates with params")
+    void it_returns_a_200_response_JSON_with_the_list_of_rates_with_params() {
+
+        BtcUsdRate[] rates = given()
+            .when()
+            .queryParam("startDate", "2021-03-04")
+            .queryParam("endDate", "2021-03-14")
             .get("/rates/btc-usd")
             .then()
             .statusCode(200)
