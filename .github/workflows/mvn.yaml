@@ -1,4 +1,4 @@
-name: FizzBuzz CI/CD
+name: Searchmetrics CI
 
 on: [push]
 
