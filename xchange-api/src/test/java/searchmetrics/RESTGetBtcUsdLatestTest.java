@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -40,6 +41,13 @@ class RESTGetBtcUsdLatestTest {
         assertThat(actual.getEntity()).isEqualTo(btcUsdRate14032021_210900());
     }
 
+    @Test
+    @DisplayName("It responds using a Content-Type: application/json")
+    void it_returns_content_type_application_json() {
+        var actual = rateResource.getLatest();
+
+        assertThat(actual.getMediaType()).isEqualTo(APPLICATION_JSON_TYPE);
+    }
 
     @Test
     @DisplayName("It responds with a status code 500 when an internal exception is thrown")

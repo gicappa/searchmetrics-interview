@@ -6,6 +6,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
+
 @Path("/rates")
 public class RateResource {
 
@@ -25,7 +27,9 @@ public class RateResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getLatest() {
         try {
-            return Response.ok(rateService.getLatestRate()).build();
+            return Response.ok(rateService.getLatestRate())
+                .type(APPLICATION_JSON_TYPE)
+                .build();
         } catch (RuntimeException re) {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).build();
         }
