@@ -1,6 +1,5 @@
 package searchmetrics;
 
-import javax.enterprise.context.ApplicationScoped;
 import java.time.LocalDate;
 import java.util.List;
 
@@ -11,7 +10,6 @@ import java.util.List;
  * It adapts the input and output if necessary and orchestrates
  * different services when necessary.
  */
-@ApplicationScoped
 public class RateService {
     private final RateRepository rateRepository;
 

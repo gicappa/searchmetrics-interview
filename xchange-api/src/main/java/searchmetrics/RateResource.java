@@ -26,6 +26,12 @@ public class RateResource {
         this.rateService = rateService;
     }
 
+    /**
+     * RateResource.getLatest() queries the rate service to return the
+     * latest rate BTC-USD in json format.
+     *
+     * @return the latest rate in json format
+     */
     @GET
     @Path("/latest")
     @Produces(APPLICATION_JSON)
@@ -42,6 +48,14 @@ public class RateResource {
         }
     }
 
+    /**
+     * RateResource.index() queries the rates database for a period of time
+     * and returns the time series of the exchange rates BTC-USD for that period
+     *
+     * @param startDate the start date of period of time in the format yyy-MM-dd
+     * @param endDate the end date of period of time in the format yyy-MM-dd
+     * @return the json array with the rates information for the specified period
+     */
     @GET
     @Path("/")
     @Produces(APPLICATION_JSON)
@@ -65,6 +79,13 @@ public class RateResource {
         }
     }
 
+    // Private Methods ////////////////////////////
+
+    /**
+     * @param startDate the start date of period of time in the format yyy-MM-dd
+     * @param endDate the end date of period of time in the format yyy-MM-dd
+     * @return a List with the BtcUsdRate information for the specified period
+     */
     private List<BtcUsdRate> getRates(String startDate, String endDate) {
         if (startDate == null && endDate == null) {
             return rateService.getRatesByDefaultPeriod();
@@ -74,6 +95,14 @@ public class RateResource {
             parse(startDate), parse(endDate));
     }
 
+    /**
+     * Parses the date queryParam from the request and throws a
+     * DateTimeParseException in case of an error.
+     *
+     * @param startDate the string representing the date in the format yyyy-MM-dd
+     * @return a LocalDate object converted from the string or null
+     * for null values of the parameter
+     */
     private LocalDate parse(String startDate) {
         if (startDate == null)
             return null;
@@ -81,6 +110,12 @@ public class RateResource {
         return LocalDate.parse(startDate);
     }
 
+    /**
+     * Creates a RateError for the case of an internal server error
+     *
+     * @param code the specific error code
+     * @return the RateError object
+     */
     private RateError serverError(String code) {
         return new RateError(
             code,
@@ -88,6 +123,12 @@ public class RateResource {
             "A unexpected exception occurred. Please contact the administrator");
     }
 
+    /**
+     * Creates a RateError for the case of a bad request error
+     *
+     * @param code the specific error code
+     * @return the RateError object
+     */
     private RateError badRequestError(String code) {
         return new RateError(
             code,

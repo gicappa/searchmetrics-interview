@@ -1,13 +1,9 @@
 package searchmetrics;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Default;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
-@Default
-@ApplicationScoped
 public class FakeRateRepository implements RateRepository {
     @Override
     public BtcUsdRate getLatest() {
