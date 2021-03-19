@@ -13,7 +13,7 @@ import org.jboss.resteasy.annotations.jaxrs.PathParam;
  * curl -X GET "https://api.blockchain.com/v3/exchange/tickers/BTC-USD" -H  "accept: application/json"
  */
 @Path("/v3")
-@RegisterRestClient(configKey="xchange-rest-client")
+@RegisterRestClient(configKey = "xchange-rest-client")
 public interface XChangeRateRestClient {
 
     @GET
