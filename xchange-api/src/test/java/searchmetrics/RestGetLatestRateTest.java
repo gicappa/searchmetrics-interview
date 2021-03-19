@@ -6,6 +6,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
+import searchmetrics.api.RateError;
+import searchmetrics.api.RateResource;
+import searchmetrics.domain.BtcUsdRate;
+import searchmetrics.domain.RateService;
+import searchmetrics.domain.XChangeRateEx;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 import static org.assertj.core.api.Assertions.assertThat;

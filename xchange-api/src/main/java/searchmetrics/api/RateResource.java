@@ -1,4 +1,4 @@
-package searchmetrics;
+package searchmetrics.api;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
@@ -8,6 +8,9 @@ import javax.ws.rs.core.Response;
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
+
+import searchmetrics.domain.BtcUsdRate;
+import searchmetrics.domain.RateService;
 
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON;
 import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;

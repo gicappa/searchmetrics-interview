@@ -1,4 +1,4 @@
-package searchmetrics;
+package searchmetrics.domain;
 
 import java.time.LocalDateTime;
 import java.util.Objects;
@@ -6,6 +6,10 @@ import java.util.Objects;
 import static java.time.ZoneOffset.UTC;
 import static java.time.format.DateTimeFormatter.ISO_INSTANT;
 
+/**
+ * BtcUsdRate is the data model of the application.
+ * It holds the rate of the exchange BTC-USD and its timestamp.
+ */
 public class BtcUsdRate {
     private final double btc;
     private final double usd;

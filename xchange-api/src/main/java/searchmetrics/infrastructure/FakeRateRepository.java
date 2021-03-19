@@ -1,8 +1,11 @@
-package searchmetrics;
+package searchmetrics.infrastructure;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
+
+import searchmetrics.domain.BtcUsdRate;
+import searchmetrics.domain.RateRepository;
 
 public class FakeRateRepository implements RateRepository {
     @Override

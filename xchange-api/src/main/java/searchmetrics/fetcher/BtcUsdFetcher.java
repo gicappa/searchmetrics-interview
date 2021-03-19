@@ -1,4 +1,4 @@
-package searchmetrics;
+package searchmetrics.fetcher;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;

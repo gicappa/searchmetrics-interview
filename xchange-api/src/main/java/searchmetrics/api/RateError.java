@@ -1,4 +1,4 @@
-package searchmetrics;
+package searchmetrics.api;
 
 import java.util.Objects;
 

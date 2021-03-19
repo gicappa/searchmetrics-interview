@@ -3,6 +3,7 @@ package searchmetrics;
 import io.quarkus.test.junit.QuarkusTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import searchmetrics.domain.BtcUsdRate;
 
 import static io.restassured.RestAssured.given;
 import static io.restassured.http.ContentType.JSON;
@@ -10,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static searchmetrics.FakeRateRepository.rate1;
-import static searchmetrics.FakeRateRepository.rate2;
-import static searchmetrics.FakeRateRepository.rate3;
+import static searchmetrics.infrastructure.FakeRateRepository.rate1;
+import static searchmetrics.infrastructure.FakeRateRepository.rate2;
+import static searchmetrics.infrastructure.FakeRateRepository.rate3;
 
 @QuarkusTest
 @DisplayName("The rate resource")

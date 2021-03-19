@@ -2,6 +2,8 @@ package searchmetrics;
 
 import java.time.LocalDateTime;
 
+import searchmetrics.domain.BtcUsdRate;
+
 /**
  * TestScenario provides some test data to be used in the tests
  */

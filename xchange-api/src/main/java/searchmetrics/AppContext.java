@@ -3,6 +3,10 @@ package searchmetrics;
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 
+import searchmetrics.domain.RateRepository;
+import searchmetrics.domain.RateService;
+import searchmetrics.infrastructure.FakeRateRepository;
+
 @ApplicationScoped
 public class AppContext {
     private final RateService rateService;

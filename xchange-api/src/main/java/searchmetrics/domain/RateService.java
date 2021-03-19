@@ -1,4 +1,4 @@
-package searchmetrics;
+package searchmetrics.domain;
 
 import java.time.Clock;
 import java.time.Instant;
@@ -16,6 +16,7 @@ import static java.time.temporal.ChronoUnit.WEEKS;
  * different services when necessary.
  */
 public class RateService {
+
     private final RateRepository rateRepository;
     private final Clock clock;
 
@@ -35,14 +36,31 @@ public class RateService {
         return rateRepository.getLatest();
     }
 
-    public List<BtcUsdRate> getRatesByPeriod(LocalDate startDate, LocalDate endDate) {
-        return rateRepository.getRateByPeriod(startDate, endDate);
-    }
-
+    /**
+     * RateService.getRatesByDefaultPeriod() is invoked when
+     * start date and end date of the historical query are not
+     * specified. By default end date is calculated to now
+     * while start date is one week back in time from now.
+     *
+     * @return the exchange rate BTC-USD of the past week
+     */
     public List<BtcUsdRate> getRatesByDefaultPeriod() {
         var endDate = LocalDate.ofInstant(Instant.now(clock), UTC);
         var startDate = endDate.minus(1, WEEKS);
 
         return getRatesByPeriod(startDate, endDate);
+    }
+
+    /**
+     * RateService.getRatesByPeriod() to retrieve the historical data
+     * of the exchanged rates for the BTC-USD symbol from the startDate
+     * to the endDate
+     *
+     * @param startDate start date of the query
+     * @param endDate end date of the query
+     * @return list of rates in the query period
+     */
+    public List<BtcUsdRate> getRatesByPeriod(LocalDate startDate, LocalDate endDate) {
+        return rateRepository.getRateByPeriod(startDate, endDate);
     }
 }
