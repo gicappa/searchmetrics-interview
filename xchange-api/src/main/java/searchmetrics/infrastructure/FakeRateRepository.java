@@ -14,8 +14,13 @@ public class FakeRateRepository implements RateRepository {
     }
 
     @Override
-    public List<BtcUsdRate> getRateByPeriod(LocalDate parse, LocalDate localDate) {
+    public List<BtcUsdRate> findRateByPeriod(LocalDate startDate, LocalDate endDate) {
         return List.of(rate1(), rate2(), rate3());
+    }
+
+    @Override
+    public void createBtcUsdRate(BtcUsdRate btcUsdRate) {
+
     }
 
     public static BtcUsdRate rate1() {

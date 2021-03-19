@@ -3,6 +3,7 @@ package searchmetrics.domain;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static java.time.ZoneOffset.UTC;
@@ -57,10 +58,19 @@ public class RateService {
      * to the endDate
      *
      * @param startDate start date of the query
-     * @param endDate end date of the query
+     * @param endDate   end date of the query
      * @return list of rates in the query period
      */
     public List<BtcUsdRate> getRatesByPeriod(LocalDate startDate, LocalDate endDate) {
-        return rateRepository.getRateByPeriod(startDate, endDate);
+        return rateRepository.findRateByPeriod(startDate, endDate);
+    }
+
+    public void updateBtcUsdRate(double xchangeRate, Instant timestamp) {
+        rateRepository.createBtcUsdRate(toBtcUsdRate(xchangeRate, timestamp));
+
+    }
+
+    private BtcUsdRate toBtcUsdRate(double xchangeRate, Instant timestamp) {
+        return new BtcUsdRate(1, xchangeRate, LocalDateTime.ofInstant(timestamp, UTC));
     }
 }

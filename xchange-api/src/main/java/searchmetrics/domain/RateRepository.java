@@ -14,5 +14,21 @@ public interface RateRepository {
      */
     BtcUsdRate getLatest();
 
-    List<BtcUsdRate> getRateByPeriod(LocalDate parse, LocalDate localDate);
+    /**
+     * RateRepository.findRateByPeriod returns the persisted
+     * historical data of the exchange rates
+     *
+     * @param startDate start of the period
+     * @param endDate end of the period
+     * @return list of rates
+     */
+    List<BtcUsdRate> findRateByPeriod(LocalDate startDate, LocalDate endDate);
+
+    /**
+     * RateRepository.createBtcUsdRate() persists a new exchange rate
+     * in the storage
+     *
+     * @param btcUsdRate the entity to be stored
+     */
+    void createBtcUsdRate(BtcUsdRate btcUsdRate);
 }

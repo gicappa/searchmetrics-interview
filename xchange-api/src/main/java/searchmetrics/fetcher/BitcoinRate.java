@@ -21,9 +21,9 @@ public class BitcoinRate {
     public final String symbol;
 
     @JsonProperty("last_trade_price")
-    public final String lastTradePrice;
+    public final Double lastTradePrice;
 
-    public BitcoinRate(String symbol, String lastTradePrice) {
+    public BitcoinRate(String symbol, Double lastTradePrice) {
         this.symbol = symbol;
         this.lastTradePrice = lastTradePrice;
     }

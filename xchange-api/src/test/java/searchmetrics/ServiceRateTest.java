@@ -3,11 +3,13 @@ package searchmetrics;
 import java.time.Clock;
 import java.time.Instant;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import searchmetrics.domain.BtcUsdRate;
 import searchmetrics.domain.RateRepository;
 import searchmetrics.domain.RateService;
 
@@ -30,7 +32,7 @@ class ServiceRateTest {
         rateRepository = mock(RateRepository.class);
 
         when(rateRepository.getLatest()).thenReturn(rate20210314());
-        when(rateRepository.getRateByPeriod(any(), any())).thenReturn(List.of(rate20210314()));
+        when(rateRepository.findRateByPeriod(any(), any())).thenReturn(List.of(rate20210314()));
 
         rateService = new RateService(rateRepository, clock2021_02_10());
     }
@@ -62,7 +64,7 @@ class ServiceRateTest {
             LocalDate.parse("2021-03-04"),
             LocalDate.parse("2021-03-13"));
 
-        verify(rateRepository).getRateByPeriod(
+        verify(rateRepository).findRateByPeriod(
             LocalDate.parse("2021-03-04"),
             LocalDate.parse("2021-03-13"));
     }
@@ -83,9 +85,17 @@ class ServiceRateTest {
     void it_returns_the_data_for_the_default_time_period() {
         rateService.getRatesByDefaultPeriod();
 
-        verify(rateRepository).getRateByPeriod(
+        verify(rateRepository).findRateByPeriod(
             LocalDate.parse("2021-02-03"),
             LocalDate.parse("2021-02-10"));
+    }
+
+    @Test
+    @DisplayName("persists a new exchange rate BTC-USD")
+    void it_persists_a_new_xchange_rate() {
+        rateService.updateBtcUsdRate(56391.2D, Instant.parse("2021-03-14T00:00:00.00Z"));
+
+        verify(rateRepository).createBtcUsdRate(new BtcUsdRate(1,56391.2D, LocalDateTime.parse("2021-03-14T00:00:00.000")));
     }
 
 }
