@@ -12,14 +12,14 @@ import org.eclipse.microprofile.rest.client.inject.RestClient;
  * xchange rate and records it using the rateService
  */
 @ApplicationScoped
-public class BtcUsdFetcher {
+public class QuarkusBtcUsdFetcher {
 
     @Inject
     @RestClient
     XChangeRateRestClient restClient;
 
     @Scheduled(cron = "{cron.expr}")
-    void cronJob(ScheduledExecution execution) {
+    void onTimeout(ScheduledExecution execution) {
         System.out.println(restClient.fetchRateBySymbol("BTC-USD"));
         System.out.println(execution.getScheduledFireTime());
     }

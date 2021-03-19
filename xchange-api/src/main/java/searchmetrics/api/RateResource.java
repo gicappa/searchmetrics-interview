@@ -93,12 +93,16 @@ public class RateResource {
      * @return a List with the BtcUsdRate information for the specified period
      */
     private List<BtcUsdRate> getRates(String startDate, String endDate) {
-        if (startDate == null || endDate == null || startDate.isBlank() || endDate.isBlank()) {
+        if (checkParam(startDate) || checkParam(endDate)) {
             return rateService.getRatesByDefaultPeriod();
         }
 
         return rateService.getRatesByPeriod(
             parse(startDate), parse(endDate));
+    }
+
+    private boolean checkParam(String date) {
+        return date == null || date.isBlank();
     }
 
     /**
