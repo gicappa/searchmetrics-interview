@@ -1,5 +1,6 @@
 package searchmetrics.domain;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.Objects;
 
@@ -11,9 +12,9 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
  * It holds the rate of the exchange BTC-USD and its timestamp.
  */
 public class BtcUsdRate {
-    private final double btc;
-    private final double usd;
-    private final LocalDateTime timestamp;
+    private double btc;
+    private double usd;
+    private LocalDateTime timestamp;
 
     public BtcUsdRate(double btc, double usd, LocalDateTime timestamp) {
         this.btc = btc;
@@ -31,6 +32,10 @@ public class BtcUsdRate {
 
     public String getTimestamp() {
         return ISO_INSTANT.format(timestamp.toInstant(UTC));
+    }
+
+    public Instant getInstant() {
+        return timestamp.toInstant(UTC);
     }
 
     @Override
