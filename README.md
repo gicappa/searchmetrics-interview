@@ -59,15 +59,57 @@ This is an example of quick event storming session for the exercise.
 This model is lightweight way to represent different levels of an architecture (systems, containers, components, classes) introducing all the needed details and initial technical choices so to disseminate and discuss the solution with the project stakeholders.
 
 #### System Context
+Represents the higher level view of the system with a trader user able to call it and its capability to query an external rates provider.
+
 ![C4 System Context](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-system-context.png?raw=true)
 #### Containers
+
+Entering in more details, the container diagram represents the interaction between two subprocesses: the frontend that queries the backend (APIs) and the backend that fetch rate information from an external system. 
 ![C4 Containers](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-containers.png?raw=true)
-#### Components 
+
+#### Components
+
+Drilling down in more details we see the internal of the API subsystem (the frontend has not being implemented) composed by a scheduled fetcher of bitcoins rates, an RESTful API provider and a storage system for the historical data. 
+
 ![C4 Components](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-components.png?raw=true)
+
 ### Classes
 In the C4 models I usually avoid the class level of the diagram that is to volatile and doesn't give me aluable information to share with the stakeholders.
 
 ### Extreme Programming (XP) Techniques
 Extreme programming provides a set of techniques to implement software fulfilling the agile manifesto values and principles.
 
-Over the time many techniques arised together with XP  
+I've done the exercise using TDD and always keeping in mind the SRP and the 4 rules of simple design :
+
+* Passes the tests
+* Reveals intention
+* No duplication
+* Fewest elements
+
+I tried not to overengineer the solution but to be complete. The stack selection was mostly driven by my previous knowledge of the selected tools so to be effective.
+
+I tried to use a TDD approach outside-in, with a double TDD cycle (similar to what is written in the Growing Object Oriented Software Guided By Tests book) creating the necessary acceptance automated tests first and using short-lived unit test to drive my design.
+
+![TDD with acceptance tests](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/tdd-with-acceptance-tests.svg?raw=true)
+
+I find useful to apply a port and adapter architecture when possible (here is barely visible only by the direction of the dependencies)
+
+![Ports and adapter](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/ports-and-adapters-architecture.svg?raw=true)
+
+### Continuous Integration
+I've set up a simple SDLC using the github action as CI server.
+
+# Taking it to Production
+In production there are many aspects to be taken into account:
+
+- Deployment: setting un a complete SDLC for the software is a must better with a continuous Deployment / Delivery system. It's not just a matter of tools but also of culture.
+- Logging and monitoring: when a software is operational it is needed to check what is happening when it is not working properly.
+- Documentation: without a proper documentation a product is hardly operable, usable, saleable. The documentation should be buildable from the CI and versioned
+
+From the code POV it is missing:
+- Front end: I would have done it using react / nextjs infrastructure 
+- Persistence: obviously an in memory store is not an option for production. The selection of the database really depends on the functional and non-functional requirements. I'm a big fan of PostgreSQL on the RDBMs side and I would choose mongodb on a NOSQL world.
+- Caching: for an high traffic website a caching system is needed to avoid hitting the database as a bottleneck and here there are plenty of options: once for all redis.
+- Scaling: we should separate the api in a microservice like architecture to scale out horizontally the apis without replicating the fetch of the btc data. 
+
+![Microservices](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-microservices.png?raw=true)
