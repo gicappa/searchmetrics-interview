@@ -76,9 +76,9 @@ Executing the following command from the terminal to launch the application:
 ```shell
 gicappa @ gianka in ~/projects/interviews/searchmetrics-interview on git:main x
 $ java -jar xchange-api/target/xchange-api-1.0-SNAPSHOT-runner.jar                                                                                                  [3:29:34]
-__  ____  __  _____   ___  __ ____  ______
---/ __ \/ / / / _ | / _ \/ //_/ / / / __/
--/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+ __  ____  __  _____   ___  __ ____  ______
+ --/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+ -/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
 --\___\_\____/_/ |_/_/|_/_/|_|\____/___/
 2021-03-20 03:29:47,954 INFO  [io.quarkus] (main) xchange-api 1.0-SNAPSHOT on JVM (powered by Quarkus 1.12.2.Final) started in 0.976s. Listening on: http://0.0.0.0:8080
 2021-03-20 03:29:47,962 INFO  [io.quarkus] (main) Profile prod activated.
@@ -135,43 +135,21 @@ The scheduling can be configured in the file `./xchange-api/src/main/resources/a
 ```properties
 cron.expr=*/5 * * * * ?
 ```
+# Application Design
 
-## Coding task
-
-### Context
-We recommend not to spend more than 8 hours on this task. Please start with the most important aspects of the project to you.
-
-If you are not able to fully implement the task - this is fine, but please explain what needs to be done in order to have a production ready application.
-
-Please develop a service, that constantly checks the currency exchange rate from Bitcoin to US-Dollar (1 Bitcoin = x USD).
-
-### Requirements
-- The check period has to be configurable
-- The service must have a REST API with the following endpoints:
-- Get latest rate
-- Get historical rates from startDate to endDate
-- Please describe in a few sentences and/or with a diagram how you planned the project and architecture.
-- It should be coded in Java
-
-### Principles
-* KISS - keep it simple, stupid
-* Single responsibility / Separation of Concerns
-* DRY - Don't repeat yourself
-* Composition over inheritance
-* YAGNI - you ain't gonna need it (no over-engineering)
-
-only use patterns if they make sense and provide a benefit
-
-### Additional Notes 
-There are no restrictions in terms of technologies, but please take a look at our tech-radar (https://status.searchmetrics.com/tech_radar/)
-If you have any questions, please feel free to reach out to us.
-
-## Initial Modeling
+## Let's start
 When creating a new system there are always different needs pulling in different directions:
 
 - the need to understand the business and derive a mental model out of it 
 - the need of drafting an architecture/design deferring all the choices that are not strictly currently needed, sketching a first idea of a possible solution 
 - the need to implement the simplest possible design to fulfil the initial requirements without anticipating any future requirements
+
+Even if they seem to be competing, they are all driven by the most important aspect of software development: *bring value to its stakeholders*. Furthermore, as soon as possible.  
+
+The troubles of creating software are mainly coming from the misconception that knowledge can be transferred like water, from one glass to another: and it would be enough to talk to a client, gather his needs and write the software.
+As I see it, this is very far from reality. 
+
+_Writing software is the side effect of a learning process that explore solutions in an iterative way._ 
 
 ## Emergent Architecture
 I'm fully convinced of the importance of an emergent design and modeling, but to bootstrap a greenfield project several techniques/tools ma come to the rescue:
@@ -234,7 +212,7 @@ I find useful to apply a port and adapter architecture when possible (here is ba
 ### Continuous Integration
 I've set up a simple SDLC using the github action as CI server.
 
-# Taking it to Production
+# Gap from Production
 In production there are many aspects to be taken into account:
 
 - Deployment: setting un a complete SDLC for the software is a must better with a continuous Deployment / Delivery system. It's not just a matter of tools but also of culture.
@@ -242,9 +220,42 @@ In production there are many aspects to be taken into account:
 - Documentation: without a proper documentation a product is hardly operable, usable, saleable. The documentation should be buildable from the CI and versioned
 
 From the code POV it is missing:
-- Front end: I would have done it using react / nextjs infrastructure 
-- Persistence: obviously an in memory store is not an option for production. The selection of the database really depends on the functional and non-functional requirements. I'm a big fan of PostgreSQL on the RDBMs side and I would choose mongodb on a NOSQL world.
-- Caching: for an high traffic website a caching system is needed to avoid hitting the database as a bottleneck and here there are plenty of options: once for all redis.
-- Scaling: we should separate the api in a microservice like architecture to scale out horizontally the apis without replicating the fetch of the btc data. 
+- Front end: I would have done it using react / nextjs infrastructure
+- Backend Code: I would generalize the BTC-USD rate to a more generic Rate model that could host any kind of exchange. I tend to avoid generalization to avoid anticipating abstraction I may not need. Often I implement few concrete cases before introducing a generalization.
+- RESTful APIs: they need to be improved to be production ready (versioning, anti throttling, auth/auth, ...).
+- Persistence: obviously an in memory store is not an option for production. The selection of the database really depends on the functional and non-functional requirements. I'm a big fan of PostgreSQL (SQL) and I would choose mongodb (NOSQL) since they both are quite general purpose.
+- Caching: for a high traffic website a caching system is needed to avoid hitting the database as a bottleneck and here there are plenty of options: once for all redis that could operate also as a database.
+- Scaling: we should separate the API component in a tiny microservice architecture to scale out horizontally the apis without replicating the fetch of the btc data. 
 
 ![Microservices](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-microservices.png?raw=true)
+
+## Coding task
+
+### Context
+We recommend not to spend more than 8 hours on this task. Please start with the most important aspects of the project to you.
+
+If you are not able to fully implement the task - this is fine, but please explain what needs to be done in order to have a production ready application.
+
+Please develop a service, that constantly checks the currency exchange rate from Bitcoin to US-Dollar (1 Bitcoin = x USD).
+
+### Requirements
+- The check period has to be configurable
+- The service must have a REST API with the following endpoints:
+- Get latest rate
+- Get historical rates from startDate to endDate
+- Please describe in a few sentences and/or with a diagram how you planned the project and architecture.
+- It should be coded in Java
+
+### Principles
+* KISS - keep it simple, stupid
+* Single responsibility / Separation of Concerns
+* DRY - Don't repeat yourself
+* Composition over inheritance
+* YAGNI - you ain't gonna need it (no over-engineering)
+
+only use patterns if they make sense and provide a benefit
+
+### Additional Notes
+There are no restrictions in terms of technologies, but please take a look at our tech-radar (https://status.searchmetrics.com/tech_radar/)
+If you have any questions, please feel free to reach out to us.
+
