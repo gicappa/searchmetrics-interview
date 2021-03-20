@@ -81,8 +81,7 @@ At the end of the build process, it is created a uber-jar with all the needed de
 
 ### Launching the Uber JAR
 
-Executing the following command from the terminal to launch the FizzBuzz
-application:
+Executing the following command from the terminal to launch the application:
 
 ```shell
 gicappa @ gianka in ~/projects/interviews/searchmetrics-interview on git:main x
