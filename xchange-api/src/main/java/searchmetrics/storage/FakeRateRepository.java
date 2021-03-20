@@ -1,4 +1,4 @@
-package searchmetrics.infrastructure;
+package searchmetrics.storage;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;

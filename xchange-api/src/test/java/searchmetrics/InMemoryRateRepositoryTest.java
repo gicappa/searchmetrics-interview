@@ -8,7 +8,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import searchmetrics.domain.BtcUsdRate;
-import searchmetrics.infrastructure.InMemoryRateRepository;
+import searchmetrics.storage.InMemoryRateRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 

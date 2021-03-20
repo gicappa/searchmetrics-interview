@@ -5,7 +5,7 @@ import javax.enterprise.inject.Produces;
 
 import searchmetrics.domain.RateRepository;
 import searchmetrics.domain.RateService;
-import searchmetrics.infrastructure.InMemoryRateRepository;
+import searchmetrics.storage.InMemoryRateRepository;
 
 /**
  * AppContext is building and providing the objects

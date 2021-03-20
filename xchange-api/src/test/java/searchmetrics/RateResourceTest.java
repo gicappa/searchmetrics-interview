@@ -11,9 +11,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.is;
-import static searchmetrics.infrastructure.FakeRateRepository.rate1;
-import static searchmetrics.infrastructure.FakeRateRepository.rate2;
-import static searchmetrics.infrastructure.FakeRateRepository.rate3;
+import static searchmetrics.storage.FakeRateRepository.rate1;
+import static searchmetrics.storage.FakeRateRepository.rate2;
+import static searchmetrics.storage.FakeRateRepository.rate3;
 
 @QuarkusTest
 @DisplayName("The rate resource")
