@@ -38,7 +38,7 @@ terminal shows a message similar to the following one:
 
 All the necessary jar files are generated.
 
-### Build the Docker images
+### Build the and run Docker images
 
 Once the Java part is successfully built, it is possible to build and
 run the docker image using docker compose:
@@ -52,7 +52,7 @@ docker image that will contain the final application of the exercise.
 
 The server will start on the port 8080.
 
-==== Creating an uber-jar
+### Creating an uber-jar
 
 It is also possible to build an `uber-jar` that is a jar that contains
 the application and all its dependencies so to be easier to be installed
@@ -63,16 +63,6 @@ To build the `uber-jar` package:
 ```shell
 $ ./mvnw verify -Dquarkus.package.type=uber-jar
 ```
-
-### Creating a native executable
-
-You can create a native executable using:
-`shell script ./mvnw package -Pnative`
-
-Or, if you don’t have GraalVM installed, you can run the native
-executable build in a container using:
-`shell script ./mvnw package -Pnative -Dquarkus.native.container-build=true`
-
 #### Build Result
 
 At the end of the build process, it is created a uber-jar with all the needed dependencies ready to be launched:
@@ -98,7 +88,7 @@ __  ____  __  _____   ___  __ ____  ______
 
 Once the server has started, access the url: `http://localhost:8080/`.
 
-## Testing the server
+### Testing the server
 To test the server it is possible to open a browser or use curl with the addresses:
 
 ```shell
@@ -138,7 +128,7 @@ $ curl -v http://localhost:8080/rates/btc-usd/\?startDate\=2021-01-01\&endDate\=
 * Connection #0 to host localhost left intact
 [{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:20.003138Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:40:25.003341Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:30.002741Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:40:35.005605Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:40.005320Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:40.969843Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:45.967893Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:50.968561Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:55.969462Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:41:00.967943Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:05.970215Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:10.936029Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:15.936018Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:20.934531Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:41:25.934835Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:30.935263Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:35.933043Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:40.900679Z"}]* Closing connection 0
 ```
-## Configuration
+### Configuration
 
 The scheduling can be configured in the file `./xchange-api/src/main/resources/application.properties` setting a cron like expression on the property:
 
