@@ -138,10 +138,10 @@ cron.expr=*/5 * * * * ?
 # Application Design
 
 ## Let's start
-When creating a new system there are always different needs pulling in different directions:
+When creating a new system, there are always different needs pulling in different directions:
 
 - the need to understand the business and derive a mental model out of it 
-- the need of drafting an architecture/design deferring all the choices that are not strictly currently needed, sketching a first idea of a possible solution 
+- the need for drafting an architecture/design deferring all the choices that are not strictly currently needed, sketching the first idea of a possible solution 
 - the need to implement the simplest possible design to fulfil the initial requirements without anticipating any future requirements
 
 Even if they seem to be competing, they are all driven by the most important aspect of software development: *bring value to its stakeholders*. Furthermore, as soon as possible.  
@@ -155,24 +155,25 @@ _Writing software is the side effect of a learning process that explore solution
 I'm fully convinced of the importance of an emergent design and modeling, but to bootstrap a greenfield project several techniques/tools ma come to the rescue:
 
 - A quick Event Storming to model the system 
-- C4 model to sketch the architectures components  
-- TDD to abide to the 4 rules of simple design to implement a version of the software that fulfil to the customer requirements without anticipate development choices.
+- C4 model to sketch the architecture's components  
+- TDD to abide by the 4 rules of simple design to implement a version of the software that fulfils the customer requirements without anticipating development choices.
 
-This phase is generally quick and be subject to iteration and changes over the lifetime of the project.
+This phase is generally quick and is subject to iteration and changes over the lifetime of the project. The goal is to produce a result as soon as possible to receive feedback (from stakeholders, clients, market, etc.) and measure how much value has been provided. 
 
 ### Event Storming
-Event Storming allows to model the system starting from the (business) events happening in the system. 
-The modeling is usually done using a long enough paper roll hanged on a wall, sticking post-it on it with different color codes to represent events, commands aggregates and read models. Eventually, the outcome is a good start to model the software. 
+Event Storming is a technique that allows modelling the software from the (business) events happening in the system. 
+The modelling is usually done using a long enough paper roll hanged on a wall, sticking post-its on it with different colour codes to represent events, commands aggregates and read models. Eventually, the outcome is a good start to model the software. 
 
 #### Event Storming Session for XChange Rate
 ![Event Storming](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/event-storming.png?raw=true)
 
-This is an example of quick event storming session for the exercise.
+This is an example of a tiny event storming session for the current exercise.
+
 ### C4 Model
-This model is lightweight way to represent different levels of an architecture (systems, containers, components, classes) introducing all the needed details and initial technical choices so to disseminate and discuss the solution with the project stakeholders.
+The C4 model is a lightweight approach to diagramming software architecture, based upon abstractions that reflect how software architects and developers think about and build software. It provides four main diagrams (systems, containers, components, classes) to describe several aspects of the architecture using a small set of abstractions.
 
 #### System Context
-Represents the higher level view of the system with a trader user able to call it and its capability to query an external rates provider.
+Represents the higher-level view of the system with a trader user able to call it and its capability to query an external rates provider.
 
 ![C4 System Context](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-system-context.png?raw=true)
 #### Containers
@@ -182,12 +183,12 @@ Entering in more details, the container diagram represents the interaction betwe
 
 #### Components
 
-Drilling down in more details we see the internal of the API subsystem (the frontend has not being implemented) composed by a scheduled fetcher of bitcoins rates, an RESTful API provider and a storage system for the historical data. 
+Drilling down in more details we see the internal of the API subsystem (the frontend has not being implemented) composed by a scheduled fetcher of bitcoins rates, a RESTful API provider and a storage system for the historical data. 
 
 ![C4 Components](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-components.png?raw=true)
 
 ### Classes
-In the C4 models I usually avoid the class level of the diagram that is to volatile and doesn't give me aluable information to share with the stakeholders.
+In the C4 model, I usually avoid the class level of the diagram that is too volatile and doesn't give me valuable information to share with the stakeholders.
 
 ### Extreme Programming (XP) Techniques
 Extreme programming provides a set of techniques to implement software fulfilling the agile manifesto values and principles.
@@ -201,7 +202,7 @@ I've done the exercise using TDD and always keeping in mind the SRP and the 4 ru
 
 I tried not to overengineer the solution but to be complete. The stack selection was mostly driven by my previous knowledge of the selected tools so to be effective.
 
-I tried to use a TDD approach outside-in, with a double TDD cycle (similar to what is written in the Growing Object Oriented Software Guided By Tests book) creating the necessary acceptance automated tests first and using short-lived unit test to drive my design.
+I tried to use a TDD approach outside-in, with a double TDD cycle (similar to what is written in the Growing Object-Oriented Software Guided By Tests book) creating the necessary acceptance of automated tests first and using short-lived unit tests to drive the design.
 
 ![TDD with acceptance tests](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/tdd-with-acceptance-tests.svg?raw=true)
 
@@ -210,22 +211,22 @@ I find useful to apply a port and adapter architecture when possible (here is ba
 ![Ports and adapter](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/ports-and-adapters-architecture.svg?raw=true)
 
 ### Continuous Integration
-I've set up a simple SDLC using the github action as CI server.
+I've set up a simple SDLC using the Github action as CI server.
 
 # Gap from Production
 In production there are many aspects to be taken into account:
 
-- Deployment: setting un a complete SDLC for the software is a must better with a continuous Deployment / Delivery system. It's not just a matter of tools but also of culture.
-- Logging and monitoring: when a software is operational it is needed to check what is happening when it is not working properly.
-- Documentation: without a proper documentation a product is hardly operable, usable, saleable. The documentation should be buildable from the CI and versioned
+- Deployment: setting un a complete SDLC for the software is a must better with a Continuous Deployment / Delivery system. It's not just a matter of tools but also of culture.
+- Logging and monitoring: when software products are operational, it is needed to check what is happening when it is not working properly.
+- Documentation: without proper documentation, a product is hardly operable, usable, saleable. The documentation should be buildable from the CI and versioned
 
 From the code POV it is missing:
 - Front end: I would have done it using react / nextjs infrastructure
 - Backend Code: I would generalize the BTC-USD rate to a more generic Rate model that could host any kind of exchange. I tend to avoid generalization to avoid anticipating abstraction I may not need. Often I implement few concrete cases before introducing a generalization.
-- RESTful APIs: they need to be improved to be production ready (versioning, anti throttling, auth/auth, ...).
-- Persistence: obviously an in memory store is not an option for production. The selection of the database really depends on the functional and non-functional requirements. I'm a big fan of PostgreSQL (SQL) and I would choose mongodb (NOSQL) since they both are quite general purpose.
-- Caching: for a high traffic website a caching system is needed to avoid hitting the database as a bottleneck and here there are plenty of options: once for all redis that could operate also as a database.
-- Scaling: we should separate the API component in a tiny microservice architecture to scale out horizontally the apis without replicating the fetch of the btc data. 
+- RESTful APIs: they need to be improved to be production-ready (versioning, anti throttling, auth/auth, ...).
+- Persistence: obviously an in-memory store is not an option for production. The selection of the database really depends on the functional and non-functional requirements. I'm a big fan of PostgreSQL (SQL) and I would choose MongoDB (NoSQL) since they both are general purpose products.
+- Caching: for a high traffic website a caching system is needed to avoid hitting the database as a bottleneck and here there are plenty of options (i.e. Redis that could operate also as a database).
+- Scaling: we should separate the API component in a tiny microservice architecture to scale out horizontally the APIs without replicating the fetch of the BTC data. 
 
 ![Microservices](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-microservices.png?raw=true)
 
