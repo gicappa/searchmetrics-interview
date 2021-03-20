@@ -230,7 +230,7 @@ From the code POV it is missing:
 
 ![Microservices](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/c4-microservices.png?raw=true)
 
-## Coding task
+# Coding task
 
 ### Context
 We recommend not to spend more than 8 hours on this task. Please start with the most important aspects of the project to you.
