@@ -1,6 +1,152 @@
 # Searchmetrics interview
 
 ![Searchmetrics](https://github.com/gicappa/searchmetrics-interview/blob/main/docs/images/sm-logo.png?raw=true)
+
+## Build the Java Application
+
+Clone the repository:
+
+```shell
+$ git clone https://github.com/gicappa/searchmetrics-interview.git
+```
+
+It is possible to build the code using the maven wrapper `./mvnw` or a
+preexisting maven installation (version 3.6+).
+
+Launch the build with the command:
+
+```shell
+$ ./mvnw clean verify
+```
+
+The process starts until all the modules are built successfully, and the
+terminal shows a message similar to the following one:
+
+```shell
+...
+[INFO] Reactor Summary for xchange-rates 1.0-SNAPSHOT:
+[INFO]
+[INFO] xchange-rates ...................................... SUCCESS [  0.947 s]
+[INFO] xchange-api ........................................ SUCCESS [ 21.525 s]
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  23.845 s
+[INFO] Finished at: 2021-03-20T03:25:24+01:00
+[INFO] ------------------------------------------------------------------------
+```
+
+All the necessary jar files are generated.
+
+### Build the Docker images
+
+Once the Java part is successfully built, it is possible to build and
+run the docker image using docker compose:
+
+```shell
+$ docker-compose up
+```
+
+This process can take some time since it needs to download and build the
+docker image that will contain the final application of the exercise.
+
+The server will start on the port 8080.
+
+==== Creating an uber-jar
+
+It is also possible to build an `uber-jar` that is a jar that contains
+the application and all its dependencies so to be easier to be installed
+and launched as a standalone server.
+
+To build the `uber-jar` package:
+
+```shell
+$ ./mvnw verify -Dquarkus.package.type=uber-jar
+```
+
+### Creating a native executable
+
+You can create a native executable using:
+`shell script ./mvnw package -Pnative`
+
+Or, if you don’t have GraalVM installed, you can run the native
+executable build in a container using:
+`shell script ./mvnw package -Pnative -Dquarkus.native.container-build=true`
+
+#### Build Result
+
+At the end of the build process, it is created a uber-jar with all the needed dependencies ready to be launched:
+
+* xchange-api/target/xchange-api-1.0-SNAPSHOT-runner.jar
+
+### Launching the Uber JAR
+
+Executing the following command from the terminal to launch the FizzBuzz
+application:
+
+```shell
+gicappa @ gianka in ~/projects/interviews/searchmetrics-interview on git:main x
+$ java -jar xchange-api/target/xchange-api-1.0-SNAPSHOT-runner.jar                                                                                                  [3:29:34]
+__  ____  __  _____   ___  __ ____  ______
+--/ __ \/ / / / _ | / _ \/ //_/ / / / __/
+-/ /_/ / /_/ / __ |/ , _/ ,< / /_/ /\ \
+--\___\_\____/_/ |_/_/|_/_/|_|\____/___/
+2021-03-20 03:29:47,954 INFO  [io.quarkus] (main) xchange-api 1.0-SNAPSHOT on JVM (powered by Quarkus 1.12.2.Final) started in 0.976s. Listening on: http://0.0.0.0:8080
+2021-03-20 03:29:47,962 INFO  [io.quarkus] (main) Profile prod activated.
+2021-03-20 03:29:47,963 INFO  [io.quarkus] (main) Installed features: [cdi, rest-client, rest-client-jackson, resteasy, resteasy-jackson, scheduler]
+2021-03-20 03:29:50,609 INFO  [sea.fet.QuarkusBtcUsdFetcher] (executor-thread-1) BitcoinRate{symbol='BTC-USD', lastTradePrice='56391.2'}
+```
+
+Once the server has started, access the url: `http://localhost:8080/`.
+
+## Testing the server
+To test the server it is possible to open a browser or use curl with the addresses:
+
+```shell
+$ curl -v http://localhost:8080/rates/btc-usd/latest                                                                                                                [3:40:20]
+*   Trying ::1...
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> GET /rates/btc-usd/latest HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Content-Length: 67
+< Content-Type: application/json
+<
+* Connection #0 to host localhost left intact
+{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:30.002741Z"}* Closing connection 0
+```
+
+and 
+
+```shell
+$ curl -v http://localhost:8080/rates/btc-usd/\?startDate\=2021-01-01\&endDate\=2021-03-31                                                                          [3:40:32]
+*   Trying ::1...
+* TCP_NODELAY set
+* Connected to localhost (::1) port 8080 (#0)
+> GET /rates/btc-usd/?startDate=2021-01-01&endDate=2021-03-31 HTTP/1.1
+> Host: localhost:8080
+> User-Agent: curl/7.64.1
+> Accept: */*
+>
+< HTTP/1.1 200 OK
+< Content-Length: 1225
+< Content-Type: application/json
+<
+* Connection #0 to host localhost left intact
+[{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:20.003138Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:40:25.003341Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:30.002741Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:40:35.005605Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:40.005320Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:40.969843Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:45.967893Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:40:50.968561Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:40:55.969462Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:41:00.967943Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:05.970215Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:10.936029Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:15.936018Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:20.934531Z"},{"btc":1.0,"usd":56391.2,"timestamp":"2021-03-20T02:41:25.934835Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:30.935263Z"},{"btc":1.0,"usd":58584.6,"timestamp":"2021-03-20T02:41:35.933043Z"},{"btc":1.0,"usd":58910.0,"timestamp":"2021-03-20T02:41:40.900679Z"}]* Closing connection 0
+```
+## Configuration
+
+The scheduling can be configured in the file `./xchange-api/src/main/resources/application.properties` setting a cron like expression on the property:
+
+```properties
+cron.expr=*/5 * * * * ?
+```
+
 ## Coding task
 
 ### Context

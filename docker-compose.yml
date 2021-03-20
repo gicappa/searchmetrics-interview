@@ -1,0 +1,12 @@
+version: '3.8'
+
+services:
+  xchange-api:
+    build:
+      context: ./xchange-api
+      dockerfile: src/main/docker/Dockerfile.jvm
+    image: searchmetrics/xchange-api:4.0
+    container_name: xchange-api
+    restart: unless-stopped
+    ports:
+      - "8080:8080"

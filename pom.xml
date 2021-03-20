@@ -7,7 +7,7 @@
   <artifactId>xchange-rates</artifactId>
   <version>1.0-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>XChange Rate</name>
+  <name>xchange-rates</name>
   <description>XChange Rate System BTC-USD</description>
   <url>https://github.com/gicappa/searchmetrics-interview</url>
   <licenses>
