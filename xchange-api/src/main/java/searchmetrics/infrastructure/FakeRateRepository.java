@@ -7,7 +7,11 @@ import java.util.List;
 import searchmetrics.domain.BtcUsdRate;
 import searchmetrics.domain.RateRepository;
 
+/**
+ * Used from the tests to stub results
+ */
 public class FakeRateRepository implements RateRepository {
+
     @Override
     public BtcUsdRate getLatest() {
         return rate1();
@@ -20,9 +24,10 @@ public class FakeRateRepository implements RateRepository {
 
     @Override
     public void createBtcUsdRate(BtcUsdRate btcUsdRate) {
-
+        // nope
     }
 
+    // mock btc usd rates
     public static BtcUsdRate rate1() {
         return new BtcUsdRate(1, 60000.15,
             LocalDateTime.of(2021, 3, 14, 13, 1, 59));

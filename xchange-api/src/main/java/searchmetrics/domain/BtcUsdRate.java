@@ -12,28 +12,48 @@ import static java.time.format.DateTimeFormatter.ISO_INSTANT;
  * It holds the rate of the exchange BTC-USD and its timestamp.
  */
 public class BtcUsdRate {
-    private double btc;
-    private double usd;
-    private LocalDateTime timestamp;
 
+    private final double btc;
+    private final double usd;
+    private final LocalDateTime timestamp;
+
+    /**
+     * Construct a new Rate
+     *
+     * @param btc the btc value
+     * @param usd the usd value
+     * @param timestamp the timestamp when it happens
+     */
     public BtcUsdRate(double btc, double usd, LocalDateTime timestamp) {
         this.btc = btc;
         this.usd = usd;
         this.timestamp = timestamp;
     }
 
+    /**
+     * @return the btc value
+     */
     public double getBTC() {
         return btc;
     }
 
+    /**
+     * @return the usd value
+     */
     public double getUSD() {
         return usd;
     }
 
+    /**
+     * @return the timestamp in formatted in ISO-8601 format
+     */
     public String getTimestamp() {
         return ISO_INSTANT.format(timestamp.toInstant(UTC));
     }
 
+    /**
+     * @return the timestamp in Instant object
+     */
     public Instant getInstant() {
         return timestamp.toInstant(UTC);
     }

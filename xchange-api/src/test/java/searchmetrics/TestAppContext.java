@@ -9,10 +9,17 @@ import searchmetrics.domain.RateRepository;
 import searchmetrics.domain.RateService;
 import searchmetrics.infrastructure.FakeRateRepository;
 
+/**
+ * AppContext is building and providing the objects
+ * to be used by the application.
+ *
+ * This is the default test appContext
+ */
 @Alternative
 @Priority(1)
 @ApplicationScoped
 public class TestAppContext {
+
     private final RateService rateService;
     private final RateRepository rateRepository;
 

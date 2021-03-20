@@ -23,6 +23,12 @@ public class BitcoinRate {
     @JsonProperty("last_trade_price")
     public final Double lastTradePrice;
 
+    /**
+     * Construct a bitcoin object with the BTC-USD data
+     *
+     * @param symbol the BTC-USD symbol
+     * @param lastTradePrice the BTC-USD last traded price
+     */
     public BitcoinRate(String symbol, Double lastTradePrice) {
         this.symbol = symbol;
         this.lastTradePrice = lastTradePrice;

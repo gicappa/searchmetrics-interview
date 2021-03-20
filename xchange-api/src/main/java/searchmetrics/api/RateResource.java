@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 
+import org.jboss.logging.Logger;
 import searchmetrics.domain.BtcUsdRate;
 import searchmetrics.domain.RateService;
 
@@ -17,6 +18,7 @@ import static javax.ws.rs.core.MediaType.APPLICATION_JSON_TYPE;
 
 @Path("/rates/btc-usd")
 public class RateResource {
+    private static final Logger LOG = Logger.getLogger(RateResource.class);
 
     private final RateService rateService;
 
@@ -45,6 +47,7 @@ public class RateResource {
                 .type(APPLICATION_JSON_TYPE)
                 .build();
         } catch (RuntimeException re) {
+            LOG.error(re);
             return Response.serverError()
                 .entity(serverError("XC001"))
                 .type(APPLICATION_JSON_TYPE)
@@ -67,18 +70,17 @@ public class RateResource {
         @QueryParam("endDate") String endDate) {
 
         try {
-
             return Response.ok(getRates(startDate, endDate))
                 .type(APPLICATION_JSON_TYPE).build();
 
         } catch (DateTimeParseException re) {
-
+            LOG.error(re);
             return Response.status(Response.Status.BAD_REQUEST)
                 .entity(badRequestError("XC003"))
                 .build();
 
         } catch (RuntimeException re) {
-
+            LOG.error(re);
             return Response.serverError().entity(serverError("XC002"))
                 .type(APPLICATION_JSON_TYPE)
                 .build();
